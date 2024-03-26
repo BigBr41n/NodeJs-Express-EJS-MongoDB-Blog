@@ -81,7 +81,24 @@ app.use('/',require('./server/routes/admin'));
 
 
 
-//port listenner 
-app.listen(PORT , ()=>{
-    console.log(`listen on  : ${PORT}`); 
-})
+app.use((req , res , next)=>{
+    const error = new Error('invalid path'); 
+    error.status = 400; 
+    next(error)
+}); 
+
+
+
+app.use((error , req , res , next)=>{
+    res.status(404).json({
+        error : {
+            message : "404",
+        }
+    })
+});
+
+
+
+
+//export app module  
+module.exports = app ; 
